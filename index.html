@@ -9,19 +9,35 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <main>
-      <h1>one sentence</h1>
-      <div id="textarea-container">
-        <textarea class="text-area"></textarea>
+      <div id="logo-container">
+        <img src="onesentence_logo.png" alt="ロゴ" id="logo" />
       </div>
-      <div class="container">
-        <button id="reset">リセット</button>
-        <button id="save"><i class="fas fa-play"></i></button>
+      
+      <div id="input-container">
+        <div class="cp_iptxt">
+          <input class="ef" type="text" placeholder="" />
+          <span class="focus_line"></span>
+          <button class="remove-btn" aria-label="Remove">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div class="add-button-container">
         <button id="add"><i class="fas fa-plus"></i></button>
       </div>
+      <button id="reset" class="fixed-btn left">
+        <i class="fas fa-undo-alt"></i>
+      </button>
+      <button id="save" class="fixed-btn right">
+        <i class="fas fa-play"></i>
+      </button>
     </main>
     <script src="main.js"></script>
   </body>
