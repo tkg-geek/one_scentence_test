@@ -3,27 +3,21 @@
 body {
     font-family: 'IBM Plex Sans JP', sans-serif;
     font-weight: 900;
-    /* 一番太いスタイルを指定 */
     margin: 0;
     padding: 0;
     height: 100vh;
-    /* 画面全体の高さに設定 */
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow: hidden;
-    /* スクロールを防ぐ */
 }
 
 main {
     width: 360px;
     max-width: 90%;
-    /* スマートフォン対応で横幅を調整 */
-    margin: 160px 0;
-    /* 上下にマージンを追加 */
+    margin: 130px 0;
 }
 
-/* h1スタイル */
 #logo-container {
     text-align: center;
     margin: 50px 0;
@@ -31,14 +25,10 @@ main {
 
 #logo {
     width: 100%;
-    /* 幅を100%に設定 */
     max-width: 220px;
-    /* 最大幅を設定 */
     height: auto;
-    /* 高さは自動 */
 }
 
-/* 入力フィールドのスタイル */
 #input-container {
     width: 100%;
 }
@@ -53,17 +43,12 @@ main {
     font: 15px/1.6 sans-serif;
     width: 100%;
     padding-left: 1em;
-    /* ラベルの位置を考慮 */
     border: none;
-    /* 枠線なし */
     background: transparent;
     outline: none;
-    /* フォーカス時のアウトラインを消去 */
     cursor: text;
-    /* カーソルをテキスト入力用に設定 */
 }
 
-/* 下線のスタイル */
 .cp_iptxt .focus_line {
     position: absolute;
     bottom: 0;
@@ -71,9 +56,7 @@ main {
     width: 100%;
     height: 2px;
     background-color: #aaaaaa;
-    /* 初期状態のグレーの下線 */
     transition: width 0.4s, background-color 0.4s;
-    /* アニメーション効果 */
 }
 
 .cp_iptxt input[type='text']:focus~.focus_line {
@@ -81,22 +64,16 @@ main {
     width: 100%;
 }
 
-/* バツボタン */
 button.remove-btn {
     position: absolute;
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-    /* 垂直方向で中央に配置 */
     background: transparent;
-    /* 背景色を透明に設定 */
     border: none;
-    /* ボーダーをなくす */
     color: #555;
-    /* 初期の色 */
     cursor: pointer;
     transition: color 0.3s ease;
-    /* 色の変更にトランジションを追加 */
 }
 
 button.remove-btn:hover {
@@ -107,7 +84,6 @@ button.remove-btn:active {
     color: #dfacaf;
 }
 
-/* +ボタン */
 .add-button-container {
     display: flex;
     justify-content: center;
@@ -117,27 +93,16 @@ button.remove-btn:active {
 
 .add-button-container button {
     background: transparent;
-    /* 背景色を透明に設定 */
     border: 1.5px solid #555;
-    /* 輪郭をつける */
     border-radius: 50%;
-    /* 丸形にする */
     width: 36px;
-    /* ボタンの幅 */
     height: 36px;
-    /* ボタンの高さ */
     color: #555;
-    /* 初期の文字色 */
     font-size: 18px;
-    /* アイコンのサイズ */
     display: flex;
-    /* フレックスボックスを使う */
     justify-content: center;
-    /* 水平方向で中央に配置 */
     align-items: center;
-    /* 垂直方向で中央に配置 */
     transition: all 0.3s;
-    /* 全てのプロパティにトランジションを適用 */
 }
 
 .add-button-container button:hover {
@@ -156,7 +121,6 @@ button {
     font-size: 16px;
 }
 
-/* 画面下部の固定ボタン */
 .fixed-btn {
     border: none;
     position: fixed;
@@ -174,12 +138,10 @@ button {
     transition: background-color 0.3s ease;
 }
 
-/* 左下に配置されるリセットボタン */
 .fixed-btn.left {
     left: 16px;
 }
 
-/* 右下に配置される再生ボタン */
 .fixed-btn.right {
     right: 16px;
 }
@@ -194,7 +156,7 @@ button {
     background-color: #777;
 }
 
-/* 全画面表示用スタイル */
+/* フルスクリーン表示用スタイル */
 .fullscreen {
     position: fixed;
     top: 0;
@@ -208,21 +170,10 @@ button {
     align-items: center;
     z-index: 1000;
     overflow: hidden;
-    white-space: nowrap;
 }
 
-/* フォントサイズの調整 */
 .fullscreen-text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    padding: 16px;
+    font-size: clamp(32px, calc(100vw / 5), 200px);
     text-align: center;
-    overflow-wrap: break-word;
-    word-break: break-word;
-    white-space: normal;
-    line-height: 1.2;
-    font-size: clamp(32px, calc(100vw / 2), 250px);
+    padding: 20px;
 }
