@@ -1,39 +1,197 @@
 @charset "utf-8";
 
 body {
-    font-family: 'Roboto', sans-serif; /* Robotoフォントを適用 */
+    font-family: 'IBM Plex Sans JP', sans-serif;
+    font-weight: 900;
+    /* 一番太いスタイルを指定 */
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    /* 画面全体の高さに設定 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    /* スクロールを防ぐ */
 }
 
 main {
     width: 360px;
-    margin: 16px auto 0;
+    max-width: 90%;
+    /* スマートフォン対応で横幅を調整 */
+    margin: 160px 0;
+    /* 上下にマージンを追加 */
 }
 
-h1 {
-    margin: 0;
-    font-size: 22px;
+/* h1スタイル */
+#logo-container {
     text-align: center;
+    margin: 50px 0;
 }
 
-.text-area { /* テキストエリアの共通スタイル */
+#logo {
     width: 100%;
-    box-sizing: border-box;
-    height: 40px;
-    font-size: 16px;
-    padding: 8px;
-    margin-top: 8px;
+    /* 幅を100%に設定 */
+    max-width: 220px;
+    /* 最大幅を設定 */
+    height: auto;
+    /* 高さは自動 */
+}
+
+/* 入力フィールドのスタイル */
+#input-container {
+    width: 100%;
+}
+
+.cp_iptxt {
+    position: relative;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.cp_iptxt input[type='text'] {
+    font: 15px/1.6 sans-serif;
+    width: 100%;
+    padding-left: 1em;
+    /* ラベルの位置を考慮 */
+    border: none;
+    /* 枠線なし */
+    background: transparent;
+    outline: none;
+    /* フォーカス時のアウトラインを消去 */
+    cursor: text;
+    /* カーソルをテキスト入力用に設定 */
+}
+
+/* 下線のスタイル */
+.cp_iptxt .focus_line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #aaaaaa;
+    /* 初期状態のグレーの下線 */
+    transition: width 0.4s, background-color 0.4s;
+    /* アニメーション効果 */
+}
+
+.cp_iptxt input[type='text']:focus~.focus_line {
+    background-color: #d94a2e;
+    width: 100%;
+}
+
+/* バツボタン */
+button.remove-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    /* 垂直方向で中央に配置 */
+    background: transparent;
+    /* 背景色を透明に設定 */
+    border: none;
+    /* ボーダーをなくす */
+    color: #555;
+    /* 初期の色 */
+    cursor: pointer;
+    transition: color 0.3s ease;
+    /* 色の変更にトランジションを追加 */
+}
+
+button.remove-btn:hover {
+    color: #d96634;
+}
+
+button.remove-btn:active {
+    color: #dfacaf;
+}
+
+/* +ボタン */
+.add-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.add-button-container button {
+    background: transparent;
+    /* 背景色を透明に設定 */
+    border: 1.5px solid #555;
+    /* 輪郭をつける */
+    border-radius: 50%;
+    /* 丸形にする */
+    width: 36px;
+    /* ボタンの幅 */
+    height: 36px;
+    /* ボタンの高さ */
+    color: #555;
+    /* 初期の文字色 */
+    font-size: 18px;
+    /* アイコンのサイズ */
+    display: flex;
+    /* フレックスボックスを使う */
+    justify-content: center;
+    /* 水平方向で中央に配置 */
+    align-items: center;
+    /* 垂直方向で中央に配置 */
+    transition: all 0.3s;
+    /* 全てのプロパティにトランジションを適用 */
+}
+
+.add-button-container button:hover {
+    color: #d94a2e;
+    border: 1.5px solid #d94a2e;
+}
+
+.add-button-container button:active {
+    color: #dfacaf;
+    border: 1.5px solid #dfacaf;
 }
 
 button {
-    padding: 4px 16px;
+    padding: 8px;
     cursor: pointer;
+    font-size: 16px;
 }
 
-.container {
+/* 画面下部の固定ボタン */
+.fixed-btn {
+    border: none;
+    position: fixed;
+    bottom: 16px;
+    width: 48px;
+    height: 48px;
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 4px;
-    margin-top: 8px;
+    border-radius: 50%;
+    background-color: #555;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* 左下に配置されるリセットボタン */
+.fixed-btn.left {
+    left: 16px;
+}
+
+/* 右下に配置される再生ボタン */
+.fixed-btn.right {
+    right: 16px;
+}
+
+.fixed-btn.left:hover,
+.fixed-btn.right:hover {
+    background-color: #aaa;
+}
+
+.fixed-btn.left:active,
+.fixed-btn.right:active {
+    background-color: #777;
 }
 
 /* 全画面表示用スタイル */
@@ -48,15 +206,23 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* 他の要素より上に表示 */
-    overflow: hidden; /* テキストがはみ出さないようにする */
-    white-space: nowrap; /* テキストを1行にする */
+    z-index: 1000;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-/* テキストのフォントサイズを画面サイズに応じて調整 */
+/* フォントサイズの調整 */
 .fullscreen-text {
-    font-size: calc(100vw / 10); /* 画面幅に応じてフォントサイズを調整 */
-    max-height: 100vh; /* 画面高さに合わせた最大サイズ */
-    overflow: hidden; /* はみ出た部分を隠す */
-    text-overflow: ellipsis; /* はみ出た部分は省略記号で表示 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    text-align: center;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    line-height: 1.2;
+    font-size: clamp(32px, calc(100vw / 2), 250px);
 }
