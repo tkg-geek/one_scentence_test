@@ -1,94 +1,90 @@
-"use strict";
+document.addEventListener("DOMContentLoaded", function () {
+  const inputContainer = document.getElementById("input-container");
+  const addButton = document.getElementById("add");
+  const resetButton = document.getElementById("reset");
+  const saveButton = document.getElementById("save");
 
-{
-  document.getElementById('reset').addEventListener('click', function() {
-    const textAreas = document.querySelectorAll('.text-area');
-    textAreas.forEach(textArea => textArea.value = ''); // すべてのテキストエリアを空にする
-    localStorage.clear(); // localStorageをクリア
+  // 初期状態のテキストエリアを追加
+  function createTextArea() {
+      const textAreaWrapper = document.createElement("div");
+      textAreaWrapper.classList.add("cp_iptxt");
 
-    // テキストエリアを1つだけに戻す
-    const textareaContainer = document.getElementById('textarea-container');
-    textareaContainer.innerHTML = ''; // コンテナをクリア
-    const initialTextArea = document.createElement('textarea');
-    initialTextArea.classList.add('text-area'); // クラスを追加
-    textareaContainer.appendChild(initialTextArea); // 最初のテキストエリアを追加
+      const input = document.createElement("input");
+      input.type = "text";
+      input.classList.add("ef");
+      input.placeholder = ""; // プレースホルダーを空に
+
+      const focusLine = document.createElement("span");
+      focusLine.classList.add("focus_line");
+
+      const removeButton = document.createElement("button");
+      removeButton.classList.add("remove-btn");
+      removeButton.setAttribute("aria-label", "Remove");
+      removeButton.innerHTML = '<i class="fas fa-times"></i>';
+
+      removeButton.onclick = function () {
+          if (inputContainer.children.length > 1) {
+              inputContainer.removeChild(textAreaWrapper);
+          }
+      };
+
+      textAreaWrapper.appendChild(input);
+      textAreaWrapper.appendChild(focusLine);
+      textAreaWrapper.appendChild(removeButton);
+      inputContainer.appendChild(textAreaWrapper);
+  }
+
+  createTextArea(); // 初期テキストエリアの作成
+
+  // +ボタンでテキストエリアを追加
+  addButton.onclick = createTextArea;
+
+  // リセットボタン
+  resetButton.onclick = function () {
+      while (inputContainer.firstChild) {
+          inputContainer.removeChild(inputContainer.firstChild);
+      }
+      createTextArea(); // 最初のテキストエリアを再作成
+  };
+
+  // フルスクリーン表示ボタン
+  saveButton.onclick = function () {
+      const textAreas = Array.from(inputContainer.querySelectorAll("input[type='text']"));
+      let currentTextIndex = 0;
+
+      const showFullScreenText = () => {
+          const fullScreenText = textAreas[currentTextIndex]?.value;
+          if (fullScreenText) {
+              const fullScreenDiv = document.createElement("div");
+              fullScreenDiv.classList.add("fullscreen");
+              fullScreenDiv.innerHTML = `<div class="fullscreen-text">${fullScreenText}</div>`;
+              
+              // フルスクリーン表示をリクエスト
+              document.body.appendChild(fullScreenDiv);
+              fullScreenDiv.requestFullscreen();
+
+              fullScreenDiv.onclick = function () {
+                  // 次のテキストがある場合、インデックスを進めて次のテキストを表示
+                  currentTextIndex++;
+                  if (currentTextIndex < textAreas.length) {
+                      const nextText = textAreas[currentTextIndex]?.value;
+                      if (nextText) {
+                          fullScreenDiv.innerHTML = `<div class="fullscreen-text">${nextText}</div>`;
+                      } else {
+                          // 次のテキストが空の場合、フルスクリーンを閉じる
+                          document.exitFullscreen();
+                          document.body.removeChild(fullScreenDiv);
+                      }
+                  } else {
+                      // 全てのテキストを表示した場合、フルスクリーンを閉じる
+                      document.exitFullscreen();
+                      document.body.removeChild(fullScreenDiv);
+                  }
+              };
+          }
+      };
+
+      // 初回のテキストを表示
+      showFullScreenText();
+  };
 });
-
-document.getElementById('save').addEventListener('click', function() {
-    const textAreas = document.querySelectorAll('.text-area');
-    const texts = Array.from(textAreas).map(area => area.value).filter(text => text); // 入力されたテキストを取得し、空でないものだけを保存
-
-    // localStorageに保存
-    texts.forEach((text, index) => {
-        localStorage.setItem(`text-${index}`, text);
-    });
-
-    // 初回のテキストをフルスクリーン表示
-    currentIndex = 0; // インデックスをリセット
-    showFullscreenText(currentIndex, texts);
-});
-
-// +マークのボタンの処理
-document.getElementById('add').addEventListener('click', function() {
-    const newTextArea = document.createElement('textarea');
-    newTextArea.classList.add('text-area'); // 新しいテキストエリアにクラスを追加
-    document.getElementById('textarea-container').appendChild(newTextArea); // テキストエリアを追加
-});
-
-// フルスクリーン表示するテキストを管理する変数
-let currentIndex = 0;
-let totalTexts = 0;
-
-function showFullscreenText(index, texts) {
-    totalTexts = texts.length;
-
-    if (index < totalTexts) {
-        const fullScreenDiv = document.createElement('div');
-        fullScreenDiv.classList.add('fullscreen');
-
-        const textSpan = document.createElement('span');
-        textSpan.classList.add('fullscreen-text');
-        textSpan.innerText = texts[index]; // 指定されたテキストを表示
-
-        fullScreenDiv.appendChild(textSpan);
-        document.body.appendChild(fullScreenDiv);
-
-        // フルスクリーン表示をリクエスト
-        if (fullScreenDiv.requestFullscreen) {
-            fullScreenDiv.requestFullscreen();
-        } else if (fullScreenDiv.mozRequestFullScreen) { // Firefox
-            fullScreenDiv.mozRequestFullScreen();
-        } else if (fullScreenDiv.webkitRequestFullscreen) { // Chrome, Safari and Opera
-            fullScreenDiv.webkitRequestFullscreen();
-        } else if (fullScreenDiv.msRequestFullscreen) { // IE/Edge
-            fullScreenDiv.msRequestFullscreen();
-        }
-
-        // フルスクリーン表示の際に、次のテキストを表示するためのクリックイベントを追加
-        fullScreenDiv.addEventListener('click', function() {
-            currentIndex++;
-            // 次のテキストを表示
-            document.body.removeChild(fullScreenDiv); // 前のフルスクリーン要素を削除
-            showFullscreenText(currentIndex, texts); // 次のテキストを表示
-        });
-    } else {
-        // すべてのテキストを表示した後、元の画面に戻る
-        currentIndex = 0; // インデックスをリセット
-        if (document.fullscreenElement) {
-            document.exitFullscreen(); // フルスクリーンを終了
-        }
-    }
-};
-
-// ページ読み込み時にlocalStorageをクリアし、テキストエリアを1つだけ表示
-window.onload = function() {
-    localStorage.clear(); // localStorageをクリア
-    const textareaContainer = document.getElementById('textarea-container');
-    textareaContainer.innerHTML = ''; // コンテナをクリア
-    const initialTextArea = document.createElement('textarea');
-    initialTextArea.classList.add('text-area'); // クラスを追加
-    textareaContainer.appendChild(initialTextArea); // 最初のテキストエリアを追加
-};
-
-
-}
